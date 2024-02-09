@@ -1,7 +1,0 @@
-node_modules
-.env
-.prettierrc
-.eslintrc.json
-.proxyrc.json
-.parcel-cache
-package-lock.json
