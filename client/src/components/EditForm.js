@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-const API_BASE_URL = "http://localhost:5001/api";
+import shopService from "../services/shopService";
 
 const EditForm = ({ product, setProduct, setEditFormDisplay }) => {
   const [formValues, setFormValues] = useState(product);
@@ -15,19 +14,11 @@ const EditForm = ({ product, setProduct, setEditFormDisplay }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${API_BASE_URL}/products/${product._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formValues),
-      });
+      const updatedProduct = await shopService(product._id, formValues);
 
-      const data = await response.json();
-
-      if (data) {
+      if (updatedProduct) {
         console.log("Product updated successfully");
-        setProduct({ ...product, ...data });
+        setProduct({ ...product, ...updatedProduct });
         setEditFormDisplay(false);
       }
     } catch (error) {

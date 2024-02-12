@@ -2,22 +2,17 @@
 import { useEffect, useState } from "react";
 import Header from "./Header";
 import ProductList from "./ProductList";
-import AddForm from "./AddForm";
-
-const API_BASE_URL = "http://localhost:5001/api";
+import shopService from "../services/shopService";
 
 const App = () => {
   const [products, setProducts] = useState([]);
-  // const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        let response = await fetch(`${API_BASE_URL}/products`);
-
-        if (response.ok) {
-          setProducts(await response.json());
-        }
+        const data = await shopService.getAllProducts();
+        setProducts(data);
       } catch (error) {
         console.error(error);
       }
@@ -26,12 +21,29 @@ const App = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const data = await shopService.getCart();
+        setCart(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCart();
+  }, []);
+
   return (
     <div id="app">
-      <Header cart={[]} />
+      <Header cart={cart} setCart={setCart} />
       <main>
-        <ProductList list={products} />
-        <AddForm />
+        <ProductList
+          products={products}
+          setProducts={setProducts}
+          cart={cart}
+          setCart={setCart}
+        />
       </main>
     </div>
   );

@@ -1,8 +1,7 @@
 import { useState } from "react";
+import shopService from "../services/shopService";
 
-const API_BASE_URL = "http://localhost:5001/api";
-
-const AddForm = () => {
+const AddForm = ({ products, setProducts }) => {
   const [formDisplay, setFormDisplay] = useState({
     button: true,
     form: false,
@@ -33,15 +32,19 @@ const AddForm = () => {
     e.preventDefault();
 
     try {
-      await fetch(`${API_BASE_URL}/products`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formValues),
-      });
+      const itemInProductList = products
+        .map((product) => product.title)
+        .includes(formValues.title);
 
-      console.log("Product added successfully");
+      if (itemInProductList) {
+        throw new Error(
+          `Cannot add new product of title '${formValues.title}'; existing product with that name already exists.`
+        );
+      }
+
+      const addedProduct = await shopService.addProduct(formValues);
+
+      setProducts([...products, addedProduct]);
       setFormValues({ title: "", price: "", quantity: "" });
     } catch (error) {
       console.error(error);
