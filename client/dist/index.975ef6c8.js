@@ -27475,7 +27475,72 @@ $RefreshReg$(_c2, "Cart");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../services/shopService":"asQi8","../utils/currencyFormatter":"eDUw8"}],"gkKU3":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","../services/shopService":"asQi8","../utils/currencyFormatter":"eDUw8","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"asQi8":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+const API_BASE_URL = "http://localhost:5001/api";
+const getAllProducts = async ()=>{
+    const response = await fetch(`${API_BASE_URL}/products`);
+    return await response.json();
+};
+const getCart = async ()=>{
+    const response = await fetch(`${API_BASE_URL}/cart`);
+    return await response.json();
+};
+const addProduct = async (formValues)=>{
+    const response = await fetch(`${API_BASE_URL}/products`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formValues)
+    });
+    return await response.json();
+};
+const deleteProduct = async (productId)=>{
+    await fetch(`${API_BASE_URL}/products/${productId}`, {
+        method: "DELETE"
+    });
+};
+const editProduct = async (productId, updatedProductValues)=>{
+    const response = await fetch(`${API_BASE_URL}/products/${productId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedProductValues)
+    });
+    return await response.json();
+};
+const addProductToCart = async (productId)=>{
+    const response = await fetch(`${API_BASE_URL}/add-to-cart`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            productId
+        })
+    });
+    return await response.json();
+};
+const checkoutCart = async ()=>{
+    await fetch(`${API_BASE_URL}/checkout`, {
+        method: "POST"
+    });
+};
+// Adding Product, Deleting Product, Editing Product, Adding Product to the cart and Cart Checkout
+exports.default = {
+    getAllProducts,
+    getCart,
+    addProduct,
+    deleteProduct,
+    editProduct,
+    addProductToCart,
+    checkoutCart
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -27505,7 +27570,15 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"km3Ru":[function(require,module,exports) {
+},{}],"eDUw8":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+const usdFormat = (num)=>{
+    return `$${num.toFixed(2)}`;
+};
+exports.default = usdFormat;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"km3Ru":[function(require,module,exports) {
 "use strict";
 var Refresh = require("7422ead32dcc1e6b");
 function debounce(func, delay) {
@@ -27643,80 +27716,7 @@ function registerExportsForReactRefresh(module1) {
     }
 }
 
-},{"7422ead32dcc1e6b":"786KC"}],"asQi8":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-const API_BASE_URL = "http://localhost:5001/api";
-const getAllProducts = async ()=>{
-    const response = await fetch(`${API_BASE_URL}/products`);
-    return await response.json();
-};
-const getCart = async ()=>{
-    const response = await fetch(`${API_BASE_URL}/cart`);
-    return await response.json();
-};
-const addProduct = async (formValues)=>{
-    const response = await fetch(`${API_BASE_URL}/products`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formValues)
-    });
-    return await response.json();
-};
-const deleteProduct = async (productId)=>{
-    await fetch(`${API_BASE_URL}/products/${productId}`, {
-        method: "DELETE"
-    });
-};
-const editProduct = async (productId, updatedProductValues)=>{
-    const response = await fetch(`${API_BASE_URL}/products/${productId}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(updatedProductValues)
-    });
-    return await response.json();
-};
-const addProductToCart = async (productId)=>{
-    const response = await fetch(`${API_BASE_URL}/add-to-cart`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            productId
-        })
-    });
-    return await response.json();
-};
-const checkoutCart = async ()=>{
-    await fetch(`${API_BASE_URL}/checkout`, {
-        method: "POST"
-    });
-};
-// Adding Product, Deleting Product, Editing Product, Adding Product to the cart and Cart Checkout
-exports.default = {
-    getAllProducts,
-    getCart,
-    addProduct,
-    deleteProduct,
-    editProduct,
-    addProductToCart,
-    checkoutCart
-};
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eDUw8":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-const usdFormat = (num)=>{
-    return `$${num.toFixed(2)}`;
-};
-exports.default = usdFormat;
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lb7Ay":[function(require,module,exports) {
+},{"7422ead32dcc1e6b":"786KC"}],"lb7Ay":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$c9fb = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -27934,7 +27934,7 @@ $RefreshReg$(_c, "ProductInfo");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../utils/currencyFormatter":"eDUw8"}],"auefg":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","../utils/currencyFormatter":"eDUw8","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"auefg":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$1dfc = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -28216,7 +28216,7 @@ $RefreshReg$(_c, "EditForm");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../services/shopService":"asQi8"}],"9FxpF":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","../services/shopService":"asQi8","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"9FxpF":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$a902 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
